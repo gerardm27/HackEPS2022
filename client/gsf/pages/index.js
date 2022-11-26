@@ -4,28 +4,22 @@ import styles from '../styles/Home.module.css'
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <div className={"container"}>
       <Head>
         <title>Geo Sensor Field</title>
         <meta name="description" content="HackEPS2022 Project" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
+      <main className={"main"}>
+        <h1 className={"title"}>
           Welcome to GSF
         </h1>
-        <h2 className={styles.description}>
+        <h2 className={"description"}>
           What do you want to do?
         </h2>
 
         <div className={styles.grid}>
-          <Card
-              imagePath = {"/report.png"}
-              title = "Report an incident"
-              description = "Report an incident to show it on the map"
-              link = "/report"
-          />
           <Card
             imagePath = {"/list.png"}
             title = "See all incidents"
