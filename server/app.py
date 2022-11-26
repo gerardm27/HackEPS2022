@@ -22,7 +22,7 @@ def create_connection():
 @app.route('/api/elements', methods=['GET']) # get All
 def retrieve_all():
     cur = create_connection()
-    cur.execute("SELECT id,ST_AsText(geom) as geom, description, status, photo FROM blackbox.forats LIMIT 2")
+    cur.execute("SELECT id,ST_AsText(geom) as geom, description, status, photo FROM blackbox.forats")
     forats = cur.fetchall()
     foratFinal = []
     for forat in forats: 
@@ -40,7 +40,7 @@ def retrieve_all():
             }
         )
 
-    cur.execute("SELECT id,ST_AsText(geom) as geom, description, status, photo FROM blackbox.canals LIMIT 2")
+    cur.execute("SELECT id,ST_AsText(geom) as geom, description, status, photo FROM blackbox.canals")
     canals = cur.fetchall()
     
     canalsFinal = []
