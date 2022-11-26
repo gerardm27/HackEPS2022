@@ -27,13 +27,13 @@ def retrieve_all():
     foratFinal = []
     for forat in forats: 
         coords = str(forat[1])[6:].split(" ")
-        lat = coords[0]
-        lng = coords[1].strip(")")
+        lng = coords[0]
+        lat = coords[1].strip(")")
         foratFinal.append(
             {
                 'id': forat[0], 
-                'lng' : lng,
                 'lat' : lat,
+                'lng' : lng,
                 'code' : forat[2],
                 'description' : forat[3],
             }
@@ -41,9 +41,11 @@ def retrieve_all():
 
     cur.execute("SELECT id,ST_AsText(geom) as geom, element_type, description FROM blackbox.canals LIMIT 2")
     canals = cur.fetchall()
+    
     # canalsFinal = []
     # for canal in canals: 
-    #     coords = str(canal[1])[6:].split(" ")
+    #     pointsList = str(canal[1])[6:].split("(")[0].split(",")
+    #     pointsList[len(pointsList)-1] = pointsList[len(pointsList)-1]
     #     lat = coords[0]
     #     lng = coords[1].strip(")")
     #     canalsFinal.append(
