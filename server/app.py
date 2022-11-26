@@ -20,7 +20,11 @@ def create_connection():
 # get all manhole, and canalitzations, 
 # put status dels dos
 # put image 
-# post de qualsevol dels dos 
+# post de qualsevol dels dos
+
+@app.route('/')
+def welcome_page():
+    return "Hello!"
 
 @app.route('/api/elements', methods=['GET']) # get All
 def retrieve_all():
