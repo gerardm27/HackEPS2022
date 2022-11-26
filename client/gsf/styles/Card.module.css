@@ -1,0 +1,39 @@
+.card {
+    margin: 1rem;
+    padding: 1.5rem;
+    text-align: left;
+    color: inherit;
+    text-decoration: none;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    max-width: 300px;
+}
+
+.centerInformation {
+    text-align: center;
+}
+
+.title {
+    margin: 1rem 0;
+    font-size: 1.5rem;
+    color: black;
+}
+
+.description {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: black
+}
+
+.card:hover,
+.card:focus {
+    border: 2px solid #0070f3;
+    box-shadow: 5px 5px rgba(59, 59, 59, 0.74);
+}
+
+.card:active {
+    border: 2px solid #0070f3;
+    box-shadow: -5px -5px rgba(59, 59, 59, 0.74);
+}
