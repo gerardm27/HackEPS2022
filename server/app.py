@@ -4,6 +4,9 @@ app = Flask(__name__)
 
 import psycopg2
 import json
+import uuid
+from flask import jsonify, request
+
 
 def create_connection():
     conn = psycopg2.connect(
@@ -29,9 +32,8 @@ def retrieve_all():
         coords = str(forat[1])[6:].split(" ")
         lng = coords[0]
         lat = coords[1].strip(")")
-        foratFinal.append(
-            {
-                'id': forat[0], 
+        foratFinal.append({
+                'id': forat[0],
                 'lat' : lat,
                 'lng' : lng,
                 'code' : forat[2],
@@ -59,7 +61,7 @@ def retrieve_all():
     #     )
 
     cur.close()
-    return json.dumps({'forats': foratFinal, 'canals':canals})
+    return jsonify({'forats': foratFinal, 'canals':canals})
 
 # @app.route('/api/elements/<id>', methods=['GET']) # get by id
 # def retrieve_single_element():
@@ -72,6 +74,24 @@ def retrieve_all():
 
 # @app.route('/api/elements/<id>', methods=['GET']) # PUT STATUS DELS DOS
 
+
+@app.route('/api/elements', methods=['POST'])
+def add_one_element():
+    cur = create_connection()
+    newId = uuid.uuid4()
+    code = uuid.uuid4()
+
+    bodyParsed = json.loads(request.data)
+    try:
+        cur.execute("INSERT INTO blackbox.forats(id, geom, code, description, status) VALUES ('%s', ST_GeomFromText('POINT(%s %s)', 4326), '%s','%s','%s')" % (newId, bodyParsed['coord'][0]['lat'], bodyParsed['coord'][0]['long'], code, bodyParsed['desc'], bodyParsed['status']))
+    except Exception as e:
+        cur.close()
+        response="ERROR CREANT EL OBJETO"
+        return jsonify(error=True, response=response), 404
+
+    cur.close()
+    response = "success"
+    return jsonify(error=False, response=response), 200
 
 
 
