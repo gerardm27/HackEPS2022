@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 
 app = Flask(__name__)
 
@@ -22,7 +22,7 @@ def create_connection():
 @app.route('/api/elements', methods=['GET']) # get All
 def retrieve_all():
     cur = create_connection()
-    cur.execute("SELECT id,ST_AsText(geom) as geom, code, description FROM blackbox.forats LIMIT 2")
+    cur.execute("SELECT id,ST_AsText(geom) as geom, description, status, photo FROM blackbox.forats LIMIT 2")
     forats = cur.fetchall()
     foratFinal = []
     for forat in forats: 
@@ -34,32 +34,36 @@ def retrieve_all():
                 'id': forat[0], 
                 'lat' : lat,
                 'lng' : lng,
-                'code' : forat[2],
-                'description' : forat[3],
+                'description' : forat[2],
+                'status' : forat[3],
+                'photo' : forat[4]
             }
         )
 
-    cur.execute("SELECT id,ST_AsText(geom) as geom, element_type, description FROM blackbox.canals LIMIT 2")
+    cur.execute("SELECT id,ST_AsText(geom) as geom, description, status, photo FROM blackbox.canals LIMIT 2")
     canals = cur.fetchall()
     
-    # canalsFinal = []
-    # for canal in canals: 
-    #     pointsList = str(canal[1])[6:].split("(")[0].split(",")
-    #     pointsList[len(pointsList)-1] = pointsList[len(pointsList)-1]
-    #     lat = coords[0]
-    #     lng = coords[1].strip(")")
-    #     canalsFinal.append(
-    #         {
-    #             'id': canal[0], 
-    #             'lng' : lng,
-    #             'lat' : lat,
-    #             'type' : canal[2],
-    #             'description' : canal[3],
-    #         }
-    #     )
+    canalsFinal = []
+    for canal in canals: 
+        coords=[]
+        pointsList = str(canal[1])[6:].split("(")[1].split(",")
+        pointsList[len(pointsList)-1] = pointsList[len(pointsList)-1][:len(pointsList[len(pointsList)-1])-1]
+        for pointPair in pointsList:
+            lat = pointPair.split(" ")[0]
+            lng = pointPair.split(" ")[1]
+            coords.append({'lat':lat, 'lng':lng})
+        canalsFinal.append(
+            {
+                'id': canal[0], 
+                'coords' : coords,
+                'description' : canal[2],
+                'status' : canal[3],
+                'photo' : canal[4],
+            }
+        )
 
     cur.close()
-    return json.dumps({'forats': foratFinal, 'canals':canals})
+    return jsonify({'forats': foratFinal, 'canals':canalsFinal})
 
 # @app.route('/api/elements/<id>', methods=['GET']) # get by id
 # def retrieve_single_element():
