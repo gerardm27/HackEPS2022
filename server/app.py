@@ -65,14 +65,28 @@ def retrieve_all():
     cur.close()
     return jsonify({'forats': foratFinal, 'canals':canalsFinal})
 
-# @app.route('/api/elements/<id>', methods=['GET']) # get by id
-# def retrieve_single_element():
-#     result1 = cur.execute("SELECT * FROM blackblox.forats WHERE id=?", (id,))
-#     if(len(result1.fetchall()) != 0):
-#         return json.dumps(result1)
-#     else: 
-#         result2 = cur.execute("SELECT * FROM blackblox.canals WHERE id=?", (id,))
-
+@app.route('/api/elements/<id>', methods=['GET']) # get by id
+def retrieve_single_element(id):
+    cur = create_connection()
+    
+    cur.execute("SELECT * FROM blackbox.forats WHERE id=%s LIMIT 1", (id,),)
+    result = cur.fetchall()
+    ttype = "forats"
+    if(len(result) == 0):
+        cur.execute("SELECT * FROM blackbox.canals WHERE id=%s LIMIT 1", (id,),)
+        result = cur.fetchall()
+        ttype = "canal"
+        if(len(result) == 0): 
+            return "Element not found", 404
+    result = result[0]
+    return {
+        'id' : result[0],
+        'geom' : result[1],
+        'type' : ttype,
+        'description' : result[3],
+        'status' : result[4],
+        'photo' : result[5],
+    }
 
 # @app.route('/api/elements/<id>', methods=['GET']) # PUT STATUS DELS DOS
 
