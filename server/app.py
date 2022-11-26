@@ -90,7 +90,7 @@ def retrieve_single_element(id):
         'photo' : result[5],
     }
 
-# @app.route('/api/elements/<id>', methods=['GET']) # PUT STATUS DELS DOS
+# @app.routedddee('/api/elements/<id>', methods=['GET']) # PUT STATUS DELS DOS
 
 
 @app.route('/api/elements', methods=['POST'])
