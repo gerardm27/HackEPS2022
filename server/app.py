@@ -1,7 +1,8 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)
 import psycopg2
 import json
 import uuid
