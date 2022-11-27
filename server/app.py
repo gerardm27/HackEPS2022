@@ -34,8 +34,8 @@ def retrieve_all():
     foratFinal = []
     for forat in forats: 
         coords = str(forat[1])[6:].split(" ")
-        lng = coords[0]
-        lat = coords[1].strip(")")
+        lat = coords[0]
+        lng = coords[1].strip(")")
         foratFinal.append({
                 'id': forat[0],
                 'lat' : lat,
@@ -104,13 +104,38 @@ def add_one_element():
     code = uuid.uuid4()
 
     bodyParsed = json.loads(request.data)
-    try:
-        cur.execute("INSERT INTO blackbox.forats(id, geom, code, description, status) VALUES ('%s', ST_GeomFromText('POINT(%s %s)', 4326), '%s','%s','%s')" % (newId, bodyParsed['coord'][0]['lat'], bodyParsed['coord'][0]['long'], code, bodyParsed['desc'], bodyParsed['status']))
-        conn.commit()
-    except Exception as e:
-        cur.close()
-        response="ERROR CREANT OBJECTE"
-        return jsonify(error=True, response=response), 404
+    tipus = bodyParsed['type'].rstrip("s")+"s"
+
+    if(len(bodyParsed['coord']) > 1):
+        # multipoints recieved
+        # need to transform it to geom
+        preGeom = "LINESTRING("
+        try: 
+            for pairPoints in bodyParsed['coord']:
+                preGeom = preGeom+str(pairPoints['lat'])+" "+str(pairPoints['long'])+","
+            preGeom = preGeom.rstrip(",")+")"
+            sql = "INSERT INTO blackbox.canals(id, geom, element_type, description, status) VALUES ('%s', ST_GeomFromText('%s', 4326), '%s','%s','%s')" % (newId, preGeom, 'canalization',  bodyParsed['desc'], bodyParsed['status'])
+            
+            cur.execute(sql)
+            conn.commit()
+        except Exception as e:
+            cur.close()
+            response="ERROR CREANT OBJECTE tipus 1" + str(e)
+            return jsonify(error=True, response=response), 404
+    else: 
+        # single point
+        if tipus == "forats":
+            try:
+                cur.execute("INSERT INTO blackbox.forats(id, geom, code, description, status) VALUES ('%s', ST_GeomFromText('POINT(%s %s)', 4326), '%s','%s','%s')" % (newId, bodyParsed['coord'][0]['lat'], bodyParsed['coord'][0]['long'], code, bodyParsed['desc'], bodyParsed['status']))
+                conn.commit()
+            except Exception as e:
+
+                cur.close()
+                response="ERROR CREANT OBJECTE tipus 2"
+                return jsonify(error=True, response=response), 404
+        else: 
+            response="pipes cannot be at a single point, they need to be a line (2 or +2 points)"
+            return jsonify(error=True, response=response), 404
 
     cur.close()
     response = "success"
@@ -120,18 +145,19 @@ def add_one_element():
 @app.route('/api/elements/<id>', methods=['PUT'])
 def modify_element(id):
     cur = create_connection()
+    if request.data == None: 
+        cur.close()
+        response = "success"
+        return jsonify(error=False, response=response), 402
+    
     bodyParsed = json.loads(request.data)
 
-    tipus = bodyParsed['type']
+    tipus = getElementType(id)
     status = bodyParsed['status']
     image = bodyParsed['image']
-    print
     try:
-        if tipus=="forats":
-            cur.execute("UPDATE blackbox.%s SET status='%s', photo='%s' WHERE id='%s'" % (tipus, status, image, id))
-            conn.commit()
-        else:
-            cur.execute("UPDATE blackbox.%s SET status='%s' WHERE id='%s'" % (tipus, status, id))
+        cur.execute("UPDATE blackbox.%s SET status='%s', photo='%s' WHERE id='%s'" % (tipus, status, image, id))
+        conn.commit()
     except Exception as e:
         cur.close()
         response = "ERROR ACTUALITZANT OBJECTE"
@@ -140,6 +166,36 @@ def modify_element(id):
     cur.close()
     response = "success"
     return jsonify(error=False, response=response), 204
+
+@app.route('/api/elements/<id>', methods=['DELETE'])
+def delete_element(id):
+    cur = create_connection()
+    tipus= getElementType(id)
+    tipus =  str(tipus.strip("s"))+"s"
+    if(tipus != "canals" and tipus != "forats"):
+        # fail.
+        response = "No entitiy found"
+        return jsonify(error=True, response=response), 404
+    cur.execute("DELETE FROM blackbox.%s WHERE id='%s'" % (tipus, id))
+    conn.commit()
+    cur.close()
+    response = "success"
+    return jsonify(error=False, response=response), 204
+
+def getElementType(id):
+    cur = create_connection()
+    
+    cur.execute("SELECT * FROM blackbox.forats WHERE id=%s LIMIT 1", (id,),)
+    result = cur.fetchall()
+    ttype = "forats"
+    if(len(result) == 0):
+        cur.execute("SELECT * FROM blackbox.canals WHERE id=%s LIMIT 1", (id,),)
+        result = cur.fetchall()
+        ttype = "canals"
+        if(len(result) == 0): 
+            return "not-valid"
+    result = result[0]
+    return ttype
 
 if __name__ == '__main__':
   app.run(debug=True)
