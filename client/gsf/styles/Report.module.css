@@ -35,12 +35,29 @@
     margin-top: 10px;
 }
 
-.button:hover {
+.buttonOutline {
+    border: 1px solid #0e0550;
+    background-color: white;
+    color: #0e0550;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    padding: .5rem 4rem;
+    margin-bottom: 10px;
+}
+
+.button:hover,
+.buttonOutline:hover {
     box-shadow: 2px 2px grey;
 }
 
-.button:active {
+.button:active,
+.buttonOutline:active {
     box-shadow: -2px -2px grey;
+}
+
+.cameraFrame {
+    border-radius: 10px;
 }
 
 @media(max-width: 768px) {

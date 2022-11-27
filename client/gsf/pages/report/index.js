@@ -3,6 +3,7 @@ import styles from "../../styles/Report.module.css";
 import {postCreateNewReport} from "../../services/apiCalls";
 import {useState} from "react";
 import Webcam from "react-webcam";
+import Image from "next/image";
 
 
 export async function createNewReport(tipus, description, status, latitud, longitud, image) {
@@ -94,35 +95,55 @@ export default function Report() {
                         <label htmlFor="longitud">Longitud:</label>
                         <input type="text" id="longitud" name="longitud" className={styles.inputStyled} required onChange={e => setLongitud(e.target.value)}/>
                     </div>
-                    
-                    <Webcam
-                        audio={false}
-                        //height={720}
-                        screenshotFormat="image/jpeg"
-                        //width={1280}
-                        videoConstraints={videoConstraints}
-                        >
-                        {({ getScreenshot }) => (
+
+                    {image ?
+                        <>
+                            <Image src={image} className={styles.cameraFrame} width={300} height={200} alt={"image"}></Image>
                             <button
                                 type = "button"
                                 onClick={() => {
-                                    const imageSrc = getScreenshot()
-                                    setImage(imageSrc)
+                                    setImage(null)
                                 }}
+                                className={styles.buttonOutline}
                             >
-                                Fer fotografía
+                                Torna a fer la foto
                             </button>
-                        )}
-                    </Webcam>
-                    <button
-                        type = "button"
-                        onClick={() => {
-                            insideCamera = !insideCamera;
-                            console.log(insideCamera);
-                        }}
-                    >
-                        Canviar càmera
-                    </button>
+                        </>
+                        :
+                        <>
+                            <Webcam
+                                audio={false}
+                                //height={720}
+                                screenshotFormat="image/jpeg"
+                                //width={1280}
+                                videoConstraints={videoConstraints}
+                                className={styles.cameraFrame}
+                            >
+                                {({getScreenshot}) => (
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const imageSrc = getScreenshot()
+                                            setImage(imageSrc)
+                                        }}
+                                        className={styles.button}
+                                    >
+                                        Fer fotografía
+                                    </button>
+                                )}
+                            </Webcam>
+                            <button
+                                type = "button"
+                                onClick={() => {
+                                    insideCamera = !insideCamera;
+                                }}
+                                className={styles.buttonOutline}
+                            >
+                                Canviar càmera
+                            </button>
+                        </>
+                    }
+
                     <span className={styles.tip}>
                         *Per introduir un canal, introdueix tantes latituds i longituds com vulguis per marcar el canal, ha de ser més de una (separades per comes)
                     </span>
