@@ -26,17 +26,25 @@ export async function getElementInformation(id) {
     }
 }
 
-export async function postCreateNewReport(tipus, description, status, coords) {
+export async function postCreateNewReport(tipus,coords,description,status,_image) {
     try {
+        console.log("tipus: " + tipus);
+        console.log("description: " + description);
+        console.log("status: " + status);
+        console.log(coords);
+        console.log("image: " + _image);
+        const tempbody = {
+            type: tipus,
+            coord: coords,
+            desc: description,
+            status: status,
+            image: _image
+        }
+        console.log(tempbody);
         const response = await axios({
             method: 'post',
             url: `${BackendURL}/elements`,
-            body: {
-                type: tipus,
-                coord: coords,
-                desc: description,
-                status : status
-            }
+            data: tempbody
         });
         return { status: response.status };
     } catch (error) {
