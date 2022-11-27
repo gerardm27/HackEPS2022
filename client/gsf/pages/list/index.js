@@ -59,10 +59,6 @@ function getCanalCard(photo, description, coords, status, id) {
 
 
 export default function List({ forats, canals }) {
-
-    console.log("TTTTTTTEFASFLASDFHK")
-    console.log(forats)
-
     return (
         <div className={"container"}>
             <Head>
