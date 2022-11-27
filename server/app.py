@@ -140,5 +140,35 @@ def modify_element(id):
     response = "success"
     return jsonify(error=False, response=response), 204
 
+@app.route('/api/elements/<id>', methods=['DELETE'])
+def delete_element(id):
+    cur = create_connection()
+    tipus= getElementType(id)
+    tipus =  tipus.strip("s")+"s"
+    if(tipus != "canals" and tipus != "forats"):
+        # fail.
+        response = "No entitiy found"
+        return jsonify(error=True, response=response), 404
+    
+    cur.execute("DELETE FROM blackbox.%s WHERE id='%s'" % (tipus, id))
+    cur.close()
+    response = "success"
+    return jsonify(error=False, response=response), 204
+
+def getElementType(id):
+    cur = create_connection()
+    
+    cur.execute("SELECT * FROM blackbox.forats WHERE id=%s LIMIT 1", (id,),)
+    result = cur.fetchall()
+    ttype = "forats"
+    if(len(result) == 0):
+        cur.execute("SELECT * FROM blackbox.canals WHERE id=%s LIMIT 1", (id,),)
+        result = cur.fetchall()
+        ttype = "canal"
+        if(len(result) == 0): 
+            return 404
+    result = result[0]
+    return ttype
+
 if __name__ == '__main__':
   app.run(debug=True)
