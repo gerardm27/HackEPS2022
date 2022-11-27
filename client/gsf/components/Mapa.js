@@ -1,8 +1,9 @@
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
+import MarkerList from './MarkerList'
 
 
-const Mapa = () => {
+export default function Mapa ({ forats, canals }) {
   return (
     <MapContainer 
       //Options for the map
@@ -17,23 +18,10 @@ const Mapa = () => {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker 
-        position={[51.505, -0.09]}>
-        
-        <Popup>  
-          This is a PopUp.
-          <a href='/report'>Click me</a>
-        </Popup>
-      </Marker>
-      <Marker 
-        position={[51.52, -0.2]}>
-        
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
-      </Marker>
+      <MarkerList 
+        forats = {forats}
+        canals = {canals}
+      />
     </MapContainer>
   )
 }
-
-export default Mapa
