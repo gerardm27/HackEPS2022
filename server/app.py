@@ -85,6 +85,15 @@ def retrieve_single_element(id):
         ttype = "canals"
         if(len(result) == 0): 
             return "Element not found", 404
+        result = result[0]
+        return {
+            'id' : result[0],
+            'geom' : result[1],
+            'type' : ttype,
+            'description' : result[3],
+            'status' : result[5],
+            'photo' : result[4],
+        }
     result = result[0]
     return {
         'id' : result[0],
