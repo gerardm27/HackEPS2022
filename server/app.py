@@ -96,6 +96,24 @@ def retrieve_single_element(id):
 
 # @app.routedddee('/api/elements/<id>', methods=['GET']) # PUT STATUS DELS DOS
 
+def uploadImage(base64Image : str):
+    IMGBB_API_KEY = "0ca84a1dbf049f525a843f8b56cbf144"
+    import base64
+    import requests
+
+    
+    url = "https://api.imgbb.com/1/upload"
+    payload = {
+        "key": IMGBB_API_KEY,
+        "image": base64Image,
+    }
+    
+    res = requests.post(url, payload)
+    if(res.status_code == 200): 
+        return res.text
+    
+    return None
+
 
 @app.route('/api/elements', methods=['POST'])
 def add_one_element():
@@ -106,6 +124,12 @@ def add_one_element():
     bodyParsed = json.loads(request.data)
     tipus = bodyParsed['type'].rstrip("s")+"s"
 
+    # CALL IMGBB API to upload base64 image --> return--> url string
+    image = uploadImage(bodyParsed['image'])
+    if(image is None): urlparsed = None
+    urlparsed = json.loads(str(image))['data']['url']
+        
+
     if(len(bodyParsed['coord']) > 1):
         # multipoints recieved
         # need to transform it to geom
@@ -114,7 +138,7 @@ def add_one_element():
             for pairPoints in bodyParsed['coord']:
                 preGeom = preGeom+str(pairPoints['lat'])+" "+str(pairPoints['long'])+","
             preGeom = preGeom.rstrip(",")+")"
-            sql = "INSERT INTO blackbox.canals(id, geom, element_type, description, status) VALUES ('%s', ST_GeomFromText('%s', 4326), '%s','%s','%s')" % (newId, preGeom, 'canalization',  bodyParsed['desc'], bodyParsed['status'])
+            sql = "INSERT INTO blackbox.canals(id, geom, element_type, description, status, photo) VALUES ('%s', ST_GeomFromText('%s', 4326), '%s','%s','%s', '%s')" % (newId, preGeom, 'canalization',  bodyParsed['desc'], bodyParsed['status'], urlparsed)
             
             cur.execute(sql)
             conn.commit()
@@ -126,7 +150,7 @@ def add_one_element():
         # single point
         if tipus == "forats":
             try:
-                cur.execute("INSERT INTO blackbox.forats(id, geom, code, description, status) VALUES ('%s', ST_GeomFromText('POINT(%s %s)', 4326), '%s','%s','%s')" % (newId, bodyParsed['coord'][0]['lat'], bodyParsed['coord'][0]['long'], code, bodyParsed['desc'], bodyParsed['status']))
+                cur.execute("INSERT INTO blackbox.forats(id, geom, code, description, status, photo) VALUES ('%s', ST_GeomFromText('POINT(%s %s)', 4326), '%s','%s','%s', '%s')" % (newId, bodyParsed['coord'][0]['lat'], bodyParsed['coord'][0]['long'], code, bodyParsed['desc'], bodyParsed['status'], urlparsed))
                 conn.commit()
             except Exception as e:
 
