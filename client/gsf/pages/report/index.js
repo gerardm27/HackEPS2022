@@ -4,6 +4,8 @@ import {postCreateNewReport} from "../../services/apiCalls";
 import {useState, useEffect} from "react";
 import Webcam from "react-webcam";
 import Image from "next/image";
+import Link from 'next/link';
+
 
 
 export async function createNewReport(tipus, description, status, latitud, longitud, image) {
@@ -27,8 +29,9 @@ export async function createNewReport(tipus, description, status, latitud, longi
         status,
         image
     );
-    
 }
+
+
 
 const takePhoto = () => {
     event.preventDefault();
@@ -70,7 +73,7 @@ export default function Report() {
 
             <main className={"main"}>
                 <h1 className={"title"}>
-                    Nou report
+                    Nou avís
                 </h1>
                 <form className={styles.formContainer}>
                     <div className={styles.formBlock}>
@@ -158,7 +161,9 @@ export default function Report() {
                     <span className={styles.tip}>
                         *Per introduir un canal, introdueix tantes latituds i longituds com vulguis per marcar el canal, ha de ser més de una (separades per comes)
                     </span>
-                    <button type="submit" className={styles.button} onClick={() => createNewReport(type, description, status, latitud, longitud, image)}>Crear</button>
+                    <Link href='/list'>
+                        <button type="submit" className={styles.button} onClick={() => createNewReport(type, description, status, latitud, longitud, image)}>Crear</button>
+                    </Link>
                 </form>
             </main>
         </div>
