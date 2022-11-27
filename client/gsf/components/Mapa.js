@@ -1,6 +1,7 @@
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 
+
 const Mapa = () => {
   return (
     <MapContainer 
@@ -19,8 +20,9 @@ const Mapa = () => {
       <Marker 
         position={[51.505, -0.09]}>
         
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
+        <Popup>  
+          This is a PopUp.
+          <a href='/report'>Click me</a>
         </Popup>
       </Marker>
       <Marker 
