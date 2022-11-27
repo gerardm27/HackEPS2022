@@ -20,8 +20,7 @@ export async function editStatusReport(id, status) {
 }
 
 export default function EditReport({element}) {
-    const [status, setStatus] = useState(element.type);
-
+    const [status, setStatus] = useState('OK');
     return (
         <div className={"container"}>
             <Head>
@@ -57,7 +56,7 @@ export default function EditReport({element}) {
                             <option value="MISSING">No està (Missing)</option>
                         </select>
                     </div>
-                    <button type="button" className={styles.button} onClick={() => editStatusReport(element.id, element.status)}>Create</button>
+                    <button type="button" className={styles.button} onClick={() => editStatusReport(element.id, status)}>Editar</button>
                 </form>
             </main>
         </div>

@@ -13,7 +13,7 @@ export default function Mapa ({ forats, canals }) {
       scrollWheelZoom={true} 
       boxZoom={true}
       touchZoom={true}
-      style={{height: 500, width: "100%"}}>
+      style={{height: 800, width: "100%"}}>
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -39,8 +39,9 @@ const MarkerList = (props) => {
     return(
         <div>
             {props.forats.map((forat) => (
+                
                 <Marker position={[forat.lat, forat.lng]}
-                    icon = {forat.status == "OK" ? OKIcon : forat.status == "MISSING" ? missingIcon : brokenIcon}
+                    icon = {forat.status === "OK" ? OKIcon : ((forat.status === "MISSING") ? missingIcon : brokenIcon)}
                     >
                     <Popup>
                         <h1>{forat.description}</h1>
