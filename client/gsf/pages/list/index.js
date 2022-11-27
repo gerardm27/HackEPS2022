@@ -69,11 +69,11 @@ export default function List({ forats, canals }) {
 
             <main className={"main"}>
                 <h1 className={"title"}>
-                    Sensors List
+                    Llistat d'ubicacions
                 </h1>
 
                 <div className={styles.buttonContainer}>
-                    <Link className={styles.button} href="/report">New</Link>
+                    <Link className={styles.button} href="/report">Afegir nou</Link>
                 </div>
 
                 <div className={styles.wrapper}>
