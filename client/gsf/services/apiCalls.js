@@ -14,6 +14,7 @@ export async function getListOfAllElements() {
 }
 
 export async function getElementInformation(id) {
+    console.log(id)
     try {
         const response = await axios({
             method: 'get',
@@ -44,11 +45,25 @@ export async function postCreateNewReport(tipus, description, status, coords) {
 }
 
 export async function deleteElement(id) {
-    console.log(id);
     try {
         const response = await axios({
             method: 'delete',
             url: `${BackendURL}/elements/${id}`
+        });
+        return { status: response.status };
+    } catch (error) {
+        return { status: error };
+    }
+}
+
+export async function putEditStatusReport(id, status) {
+    try {
+        const response = await axios({
+            method: 'put',
+            url: `${BackendURL}/elements/${id}`,
+            data: {
+                status: status
+            }
         });
         return { status: response.status };
     } catch (error) {

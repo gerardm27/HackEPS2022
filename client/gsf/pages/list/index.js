@@ -25,10 +25,6 @@ export async function deleteLocation(description, id) {
     console.log(id);
 }
 
-export async function editLocation(id) {
-    console.log(id)
-}
-
 function getHoleCard(photo, description, lat, lng, status, id) {
     let cardStyle = styles.card;
     if (status === "BROKEN") {

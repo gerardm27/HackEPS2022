@@ -16,9 +16,9 @@ export default function CardHoleContent({ description, lat, long, photo, id }) {
                 <div className={styles.actionButtonCall} onClick={() => deleteLocation(description, id)}>
                     <Image src={"/delete.svg"} alt={"delete"} width={30} height={30}/>
                 </div>
-                <div className={styles.actionButtonCall} onClick={() => editLocation(description, id)}>
+                <a className={styles.actionButtonCall} href={`/report/${id}`}>
                     <Image src={"/edit.svg"} alt={"edit"} width={30} height={30}/>
-                </div>
+                </a>
             </div>
         </>
     )
