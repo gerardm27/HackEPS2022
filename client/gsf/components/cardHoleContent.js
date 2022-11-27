@@ -13,10 +13,10 @@ export default function CardHoleContent({ description, lat, long, photo, id }) {
                 <div className={styles.coordinates}><b>Latitud:</b> {lat} <b>Longitud:</b> {long}</div>
             </div>
             <div className={styles.actionButtons}>
-                <div className={styles.actionButtonCall} onClick={() => deleteLocation(id)}>
+                <div className={styles.actionButtonCall} onClick={() => deleteLocation(description, id)}>
                     <Image src={"/delete.svg"} alt={"delete"} width={30} height={30}/>
                 </div>
-                <div className={styles.actionButtonCall} onClick={() => editLocation(id)}>
+                <div className={styles.actionButtonCall} onClick={() => editLocation(description, id)}>
                     <Image src={"/edit.svg"} alt={"edit"} width={30} height={30}/>
                 </div>
             </div>

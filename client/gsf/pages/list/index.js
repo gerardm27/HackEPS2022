@@ -17,10 +17,12 @@ export async function getServerSideProps(context) {
 }
 
 export async function deleteLocation(description, id) {
+    console.log(description)
     let text = `Estas segur de que vols esborrar la localitzacio ${description}.`;
     if (confirm(text) === true) {
         await deleteElement(id);
     }
+    console.log(id);
 }
 
 export async function editLocation(id) {

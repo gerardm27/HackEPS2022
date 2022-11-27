@@ -44,6 +44,7 @@ export async function postCreateNewReport(tipus, description, status, coords) {
 }
 
 export async function deleteElement(id) {
+    console.log(id);
     try {
         const response = await axios({
             method: 'delete',
