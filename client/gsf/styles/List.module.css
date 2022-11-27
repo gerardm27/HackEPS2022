@@ -1,0 +1,85 @@
+.card,
+.cardBroken,
+.cardMissing {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(69, 124, 61, 0.58);
+    padding: 1rem 2rem;
+    margin: 0.5rem 0;
+    box-shadow: 2px 2px grey;
+}
+
+.cardBroken {
+    background-color: rgba(87, 126, 126, 0.58);
+}
+
+.cardMissing {
+    background-color: rgba(210, 119, 119, 0.58);
+}
+
+.wrapper {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.tabs {
+    position: relative;
+    margin: 3rem 0;
+}
+.tabs::before,
+.tabs::after {
+    content: "";
+    display: table;
+}
+.tabs::after {
+    clear: both;
+}
+.tab {
+    float: left;
+}
+.tabSwitch {
+    display: none;
+}
+.tabLabel {
+    position: relative;
+    display: block;
+    line-height: 2.75em;
+    padding: 0 1.618em;
+    background: #0e0550;
+    border: 1px solid #0e0550;
+    color: #fff;
+    cursor: pointer;
+    top: 0;
+    transition: all 0.25s;
+}
+.tabLabel:hover {
+    top: -0.25rem;
+    transition: top 0.25s;
+}
+.tabContent {
+    position: absolute;
+    z-index: 1;
+    top: 2.75em;
+    left: 0;
+    width: 100%;
+    padding: 1.618rem;
+    background: #fff;
+    color: #2c3e50;
+    border-bottom: 0.25rem solid #bdc3c7;
+    opacity: 0;
+    transition: all 0.35s;
+}
+.tabSwitch:checked + .tabLabel {
+    background: #fff;
+    color: #2c3e50;
+    border: 1px solid #0e0550;
+    transition: all 0.35s;
+    z-index: 1;
+    top: -0.0625rem;
+}
+.tabSwitch:checked + label + .tabContent {
+    z-index: 2;
+    opacity: 1;
+    transition: all 0.35s;
+}
