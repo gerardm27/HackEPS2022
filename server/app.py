@@ -14,6 +14,7 @@ def create_connection():
         database="postgres",
         user="rd001",
         password="PUe7nhnH")
+    conn.autocommit = True
     cur = conn.cursor()
     return cur
 
@@ -106,9 +107,10 @@ def add_one_element():
     bodyParsed = json.loads(request.data)
     try:
         cur.execute("INSERT INTO blackbox.forats(id, geom, code, description, status) VALUES ('%s', ST_GeomFromText('POINT(%s %s)', 4326), '%s','%s','%s')" % (newId, bodyParsed['coord'][0]['lat'], bodyParsed['coord'][0]['long'], code, bodyParsed['desc'], bodyParsed['status']))
+        conn.commit()
     except Exception as e:
         cur.close()
-        response="ERROR CREANT EL OBJETO"
+        response="ERROR CREANT OBJECTE"
         return jsonify(error=True, response=response), 404
 
     cur.close()
@@ -116,7 +118,29 @@ def add_one_element():
     return jsonify(error=False, response=response), 200
 
 
+@app.route('/api/elements/<id>', methods=['PUT'])
+def modify_element(id):
+    cur = create_connection()
+    bodyParsed = json.loads(request.data)
 
+    tipus = bodyParsed['type']
+    status = bodyParsed['status']
+    image = bodyParsed['image']
+    print
+    try:
+        if tipus=="forats":
+            cur.execute("UPDATE blackbox.%s SET status='%s', photo='%s' WHERE id='%s'" % (tipus, status, image, id))
+
+        else:
+            cur.execute("UPDATE blackbox.%s SET status='%s' WHERE id='%s'" % (tipus, status, id))
+    except Exception as e:
+        cur.close()
+        response = "ERROR ACTUALITZANT OBJECTE"
+        return jsonify(error=True, response=response), 404
+
+    cur.close()
+    response = "success"
+    return jsonify(error=False, response=response), 204
 
 if __name__ == '__main__':
   app.run(debug=True)
