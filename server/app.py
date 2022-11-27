@@ -34,8 +34,8 @@ def retrieve_all():
     foratFinal = []
     for forat in forats: 
         coords = str(forat[1])[6:].split(" ")
-        lat = coords[0]
-        lng = coords[1].strip(")")
+        lng = coords[0]
+        lat = coords[1].strip(")")
         foratFinal.append({
                 'id': forat[0],
                 'lat' : lat,
@@ -55,8 +55,8 @@ def retrieve_all():
         pointsList = str(canal[1])[6:].split("(")[1].split(",")
         pointsList[len(pointsList)-1] = pointsList[len(pointsList)-1][:len(pointsList[len(pointsList)-1])-1]
         for pointPair in pointsList:
-            lat = pointPair.split(" ")[0]
-            lng = pointPair.split(" ")[1]
+            lng = pointPair.split(" ")[0]
+            lat = pointPair.split(" ")[1]
             coords.append({'lat':lat, 'lng':lng})
         canalsFinal.append(
             {
