@@ -7,14 +7,13 @@ import json
 import uuid
 from flask import jsonify, request
 
-
-def create_connection():
-    conn = psycopg2.connect(
+conn = psycopg2.connect(
         host="blackbox.insdosl.com",
         database="postgres",
         user="rd001",
         password="PUe7nhnH")
-    conn.autocommit = True
+
+def create_connection():
     cur = conn.cursor()
     return cur
 
@@ -130,7 +129,7 @@ def modify_element(id):
     try:
         if tipus=="forats":
             cur.execute("UPDATE blackbox.%s SET status='%s', photo='%s' WHERE id='%s'" % (tipus, status, image, id))
-
+            conn.commit()
         else:
             cur.execute("UPDATE blackbox.%s SET status='%s' WHERE id='%s'" % (tipus, status, id))
     except Exception as e:
