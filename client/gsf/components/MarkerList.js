@@ -51,7 +51,13 @@ const MarkerList = (props) => {
             {props.canals.map((canal) => (
                 <Polyline pathOptions={{color: 'blue', weight: 7}} 
                     positions={formatCoords(canal.coords)}
-                />
+                    
+                >
+                    <Popup>
+                        <h1>{canal.description}</h1>
+                        <img src={canal.photo}/>
+                    </Popup>
+                </Polyline>
             ))}
         </div>
     )  

@@ -3,9 +3,13 @@ import styles from "../../styles/Report.module.css";
 import {postCreateNewReport} from "../../services/apiCalls";
 
 export async function createNewReport(tipus, description, status, latitud, longitud) {
+    event.preventDefault();
+    console.log(tipus, description, status, latitud, longitud);
     const latituds = latitud.split(",");
+    console.log(latituds);
     const longituds = longitud.split(",");
-    const coords = []
+    console.log(longituds);
+    let coords = []
 
     for (let i = 0; i < latituds.length; ++i) {
         coords.push({
@@ -23,7 +27,6 @@ export async function createNewReport(tipus, description, status, latitud, longi
 }
 
 export default function Report() {
-    
     return (
         <div className={"container"}>
             <Head>
@@ -50,7 +53,7 @@ export default function Report() {
                         <input type="text" id="description" name="description" className={styles.inputStyled} required />
                     </div>
 
-
+                    
                     <div className={styles.formBlock}>
                         <label htmlFor="type">Estat:</label>
                         <select name="estatus" id="estatus" className={styles.inputStyled} required >
@@ -62,19 +65,20 @@ export default function Report() {
 
 
                     <div className={styles.formBlock}>
-                        <label htmlFor="lat">Latitud:</label>
-                        <input type="text" id="lat" name="lat" className={styles.inputStyled} required />
+                        <label htmlFor="latitud">Latitud:</label>
+                        <input type="text" id="latitud" name="latitud" className={styles.inputStyled} required />
                     </div>
 
                     <div className={styles.formBlock}>
-                        <label htmlFor="lng">Longitud:</label>
-                        <input type="text" id="lng" name="lng" className={styles.inputStyled} required />
+                        <label htmlFor="longitud">Longitud:</label>
+                        <input type="text" id="longitud" name="longitud" className={styles.inputStyled} required />
                     </div>
-
+                    <button>
+                        image
+                    </button>
                    <span className={styles.tip}>
-                       *Per introduir un canal, introdueix tantes latituds i longituds com vulguis per marcar el canal, ha de ser més de una
+                       *Per introduir un canal, introdueix tantes latituds i longituds com vulguis per marcar el canal, ha de ser més de una (separades per comes)
                    </span>
-
                     <button type="submit" className={styles.button} onClick={createNewReport}>Create</button>
                 </form>
             </main>
