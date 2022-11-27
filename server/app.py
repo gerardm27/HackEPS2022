@@ -138,8 +138,7 @@ def add_one_element():
             return jsonify(error=True, response=response), 404
 
     cur.close()
-    response = "success"
-    return jsonify(error=False, response=response), 200
+    return jsonify(error=False, response=newId), 200
 
 
 @app.route('/api/elements/<id>', methods=['PUT'])
