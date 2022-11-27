@@ -117,6 +117,18 @@ def uploadImage(base64Image : str):
 
 @app.route('/api/elements', methods=['POST'])
 def add_one_element():
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("MyMyAllowCredentialsPolicy",
+            builder =>
+            {
+                builder.AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowed(origin => true) // allow any origin
+                    .AllowCredentials(); // allow credentials
+            }
+        );
+    }); 
     cur = create_connection()
     newId = uuid.uuid4()
     code = uuid.uuid4()
