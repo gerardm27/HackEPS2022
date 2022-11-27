@@ -1,16 +1,17 @@
 import Head from "next/head";
 import styles from "../../styles/Report.module.css";
 import {postCreateNewReport} from "../../services/apiCalls";
+import {useState} from "react";
+import Webcam from "react-webcam";
 
-export async function createNewReport(tipus, description, status, latitud, longitud) {
+
+export async function createNewReport(tipus, description, status, latitud, longitud, image) {
     event.preventDefault();
-    console.log(tipus, description, status, latitud, longitud);
     const latituds = latitud.split(",");
-    console.log(latituds);
     const longituds = longitud.split(",");
-    console.log(longituds);
     let coords = []
-
+    image = image.split('data:image/jpeg;base64,')[1];
+    description = JSON.stringify(description);
     for (let i = 0; i < latituds.length; ++i) {
         coords.push({
             lat: latituds[i],
@@ -20,13 +21,33 @@ export async function createNewReport(tipus, description, status, latitud, longi
 
     await postCreateNewReport(
         tipus,
+        coords,
         description,
         status,
-        coords
+        image
     );
 }
 
+const takePhoto = () => {
+    event.preventDefault();
+    const imageSrc = getScreenshot();
+    console.log(imageSrc);
+};
+
 export default function Report() {
+    const [type, setType] = useState('forats');
+    const [description, setDescription] = useState('');
+    const [status, setStatus] = useState('OK');
+    const [longitud, setLongitud] = useState('');
+    const [latitud, setLatitud] = useState('');
+    const [image, setImage] = useState(null);
+    
+    const videoConstraints = {
+        facingMode: "user"
+    };
+
+    let insideCamera = true;
+
     return (
         <div className={"container"}>
             <Head>
@@ -42,7 +63,7 @@ export default function Report() {
                 <form className={styles.formContainer}>
                     <div className={styles.formBlock}>
                         <label htmlFor="type">Tipus:</label>
-                        <select name="type" id="type" className={styles.inputStyled} required >
+                        <select name="type" id="type" defaultValue={"forats"} className={styles.inputStyled} required onChange={e => setType(e.target.value)} >
                             <option value="forats">Forat</option>
                             <option value="canals">Canal</option>
                         </select>
@@ -50,13 +71,13 @@ export default function Report() {
 
                     <div className={styles.formBlock}>
                         <label htmlFor="description">Description:</label>
-                        <input type="text" id="description" name="description" className={styles.inputStyled} required />
+                        <input type="text" id="description" name="description" className={styles.inputStyled} required onChange={e => setDescription(e.target.value)}/>
                     </div>
 
                     
                     <div className={styles.formBlock}>
                         <label htmlFor="type">Estat:</label>
-                        <select name="estatus" id="estatus" className={styles.inputStyled} required >
+                        <select name="estatus" id="estatus" defaultValue={"OK"} className={styles.inputStyled} required onChange={e => setStatus(e.target.value)}>
                             <option value="OK">Està be (OK)</option>
                             <option value="BROKEN">Trencat (Broken)</option>
                             <option value="MISSING">No està (Missing)</option>
@@ -66,20 +87,46 @@ export default function Report() {
 
                     <div className={styles.formBlock}>
                         <label htmlFor="latitud">Latitud:</label>
-                        <input type="text" id="latitud" name="latitud" className={styles.inputStyled} required />
+                        <input type="text" id="latitud" name="latitud" className={styles.inputStyled} required onChange={e => setLatitud(e.target.value)}/>
                     </div>
 
                     <div className={styles.formBlock}>
                         <label htmlFor="longitud">Longitud:</label>
-                        <input type="text" id="longitud" name="longitud" className={styles.inputStyled} required />
+                        <input type="text" id="longitud" name="longitud" className={styles.inputStyled} required onChange={e => setLongitud(e.target.value)}/>
                     </div>
-                    <button>
-                        image
+                    
+                    <Webcam
+                        audio={false}
+                        //height={720}
+                        screenshotFormat="image/jpeg"
+                        //width={1280}
+                        videoConstraints={videoConstraints}
+                        >
+                        {({ getScreenshot }) => (
+                            <button
+                                type = "button"
+                                onClick={() => {
+                                    const imageSrc = getScreenshot()
+                                    setImage(imageSrc)
+                                }}
+                            >
+                                Fer fotografía
+                            </button>
+                        )}
+                    </Webcam>
+                    <button
+                        type = "button"
+                        onClick={() => {
+                            insideCamera = !insideCamera;
+                            console.log(insideCamera);
+                        }}
+                    >
+                        Canviar càmera
                     </button>
-                   <span className={styles.tip}>
-                       *Per introduir un canal, introdueix tantes latituds i longituds com vulguis per marcar el canal, ha de ser més de una (separades per comes)
-                   </span>
-                    <button type="submit" className={styles.button} onClick={createNewReport}>Create</button>
+                    <span className={styles.tip}>
+                        *Per introduir un canal, introdueix tantes latituds i longituds com vulguis per marcar el canal, ha de ser més de una (separades per comes)
+                    </span>
+                    <button type="submit" className={styles.button} onClick={() => createNewReport(type, description, status, latitud, longitud, image)}>Create</button>
                 </form>
             </main>
         </div>
