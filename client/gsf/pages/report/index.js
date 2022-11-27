@@ -1,7 +1,7 @@
 import Head from "next/head";
 import styles from "../../styles/Report.module.css";
 import {postCreateNewReport} from "../../services/apiCalls";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import Webcam from "react-webcam";
 import Image from "next/image";
 
@@ -27,6 +27,7 @@ export async function createNewReport(tipus, description, status, latitud, longi
         status,
         image
     );
+    
 }
 
 const takePhoto = () => {
@@ -43,11 +44,21 @@ export default function Report() {
     const [latitud, setLatitud] = useState('');
     const [image, setImage] = useState(null);
     
-    const videoConstraints = {
-        facingMode: "user"
-    };
-
     let insideCamera = true;
+    let videoConstraints;
+    useEffect(() => {
+        if(insideCamera) {
+            videoConstraints = {
+                facingMode: "user"
+            };
+        }
+        else {
+            videoConstraints = {
+                facingMode: {exact: "environment"}
+            };
+
+        };
+    }, [insideCamera]);
 
     return (
         <div className={"container"}>
@@ -147,7 +158,7 @@ export default function Report() {
                     <span className={styles.tip}>
                         *Per introduir un canal, introdueix tantes latituds i longituds com vulguis per marcar el canal, ha de ser més de una (separades per comes)
                     </span>
-                    <button type="submit" className={styles.button} onClick={() => createNewReport(type, description, status, latitud, longitud, image)}>Create</button>
+                    <button type="submit" className={styles.button} onClick={() => createNewReport(type, description, status, latitud, longitud, image)}>Crear</button>
                 </form>
             </main>
         </div>

@@ -64,13 +64,13 @@ export async function deleteElement(id) {
     }
 }
 
-export async function putEditStatusReport(id, status) {
+export async function putEditStatusReport(id, _status) {
     try {
         const response = await axios({
             method: 'put',
             url: `${BackendURL}/elements/${id}`,
             data: {
-                status: status
+                status: _status
             }
         });
         return { status: response.status };
