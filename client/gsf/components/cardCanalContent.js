@@ -1,7 +1,9 @@
 import styles from "../styles/cardContents.module.css";
 import Image from "next/image";
+import {deleteLocation, editLocation} from "../pages/list";
 
-export default function CardCanalContent({ description, latInicial, longInicial, latFinal, longFinal, photo }) {
+
+export default function CardCanalContent({ description, latInicial, longInicial, latFinal, longFinal, photo, id }) {
     return (
         <>
             <div className={styles.image}>
@@ -15,12 +17,12 @@ export default function CardCanalContent({ description, latInicial, longInicial,
                 <div className={styles.coordinates}><b>Latitud:</b> {latFinal} <b>Longitud:</b> {longFinal}</div>
             </div>
             <div className={styles.actionButtons}>
-                <a className={styles.actionButtonCall}>
+                <div className={styles.actionButtonCall} onClick={() => deleteLocation(id)}>
                     <Image src={"/delete.svg"} alt={"delete"} width={30} height={30}/>
-                </a>
-                <a className={styles.actionButtonCall}>
+                </div>
+                <div className={styles.actionButtonCall} onClick={() => editLocation(id)}>
                     <Image src={"/edit.svg"} alt={"edit"} width={30} height={30}/>
-                </a>
+                </div>
             </div>
         </>
     )

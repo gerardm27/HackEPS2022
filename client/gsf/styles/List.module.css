@@ -106,3 +106,23 @@
 .button:active {
     box-shadow: -2px -2px grey;
 }
+
+@media(max-width: 768px) {
+    .card,
+    .cardBroken,
+    .cardMissing {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .buttonContainer {
+        width: 100%;
+        display: flex;
+        justify-content: end;
+        padding-top: 2rem;
+    }
+
+    .wrapper {
+        width: 100%;
+    }
+}

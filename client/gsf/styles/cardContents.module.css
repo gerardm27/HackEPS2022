@@ -23,5 +23,25 @@
 
 .actionButtonCall {
     cursor: pointer;
-    margin-right: 15px;
+    margin: 0 8px;
 }
+
+@media(max-width: 768px) {
+    .actionButtons {
+        display: flex;
+        width: 100%;
+        margin-top: 10px;
+        justify-content: center;
+    }
+
+    .content {
+        width: 100%;
+    }
+
+    .image {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+}
+

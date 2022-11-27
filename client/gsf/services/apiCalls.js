@@ -13,6 +13,18 @@ export async function getListOfAllElements() {
     }
 }
 
+export async function getElementInformation(id) {
+    try {
+        const response = await axios({
+            method: 'get',
+            url: `${BackendURL}/elements/${id}`,
+        });
+        return { list: response.data };
+    } catch (error) {
+        return { list: null };
+    }
+}
+
 export async function postCreateNewReport(tipus, description, status, coords) {
     try {
         const response = await axios({
@@ -27,6 +39,18 @@ export async function postCreateNewReport(tipus, description, status, coords) {
         });
         return { status: response.status };
     } catch (error) {
+        return { status: error };
+    }
+}
+
+export async function deleteElement(id) {
+    try {
+        const response = await axios({
+            method: 'delete',
+            url: `${BackendURL}/elements/${id}`
+        });
         return { status: response.status };
+    } catch (error) {
+        return { status: error };
     }
 }

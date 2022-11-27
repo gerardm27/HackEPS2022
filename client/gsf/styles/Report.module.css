@@ -42,3 +42,9 @@
 .button:active {
     box-shadow: -2px -2px grey;
 }
+
+@media(max-width: 768px) {
+    .formContainer {
+        width: 90%;
+    }
+}

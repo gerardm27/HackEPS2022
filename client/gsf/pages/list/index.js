@@ -2,7 +2,7 @@ import Head from "next/head";
 import styles from "../../styles/List.module.css";
 import CardHoleContent from "../../components/cardHoleContent";
 import CardCanalContent from "../../components/cardCanalContent";
-import {getListOfAllElements} from "../../services/apiCalls";
+import {deleteElement, getListOfAllElements} from "../../services/apiCalls";
 import Link from "next/link";
 
 export async function getServerSideProps(context) {
@@ -14,6 +14,17 @@ export async function getServerSideProps(context) {
     return {
         props: { forats: holes, canals: canals },
     }
+}
+
+export async function deleteLocation(description, id) {
+    let text = `Estas segur de que vols esborrar la localitzacio ${description}.`;
+    if (confirm(text) === true) {
+        await deleteElement(id);
+    }
+}
+
+export async function editLocation(id) {
+    console.log(id)
 }
 
 function getHoleCard(photo, description, lat, lng, status, id) {
@@ -30,6 +41,7 @@ function getHoleCard(photo, description, lat, lng, status, id) {
                 lat={lat}
                 long={lng}
                 photo={"/placeholder.jpeg"}
+                id={id}
             />
         </div>
     );
@@ -51,6 +63,7 @@ function getCanalCard(photo, description, coords, status, id) {
                 latFinal={coords[coords.length-1].lat}
                 longFinal={coords[coords.length-1].lng}
                 photo={"/placeholder.jpeg"}
+                id={id}
             />
         </div>
     );
@@ -80,7 +93,7 @@ export default function List({ forats, canals }) {
                     <div className={styles.tabs}>
                         <div className={styles.tab}>
                             <input type="radio" name="css-tabs" id="tab-1" checked className={styles.tabSwitch} />
-                            <label htmlFor="tab-1" className={styles.tabLabel}>Llistat de forats</label>
+                            <label htmlFor="tab-1" className={styles.tabLabel}>Forats</label>
                             <div className={styles.tabContent}>
                                 {forats.map((item) => (
                                     getHoleCard(item.photo, item.description, item.lat, item.lng, item.status, item.id)
@@ -89,7 +102,7 @@ export default function List({ forats, canals }) {
                         </div>
                         <div className={styles.tab}>
                             <input type="radio" name="css-tabs" id="tab-2" className={styles.tabSwitch} />
-                            <label htmlFor="tab-2" className={styles.tabLabel}>Llistat de canals</label>
+                            <label htmlFor="tab-2" className={styles.tabLabel}>Canals</label>
                             <div className={styles.tabContent}>
                                 {canals.map((item) => (
                                     getCanalCard(item.photo, item.description, item.coords, item.status, item.id)
