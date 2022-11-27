@@ -25,7 +25,7 @@
 
 .tabs {
     position: relative;
-    margin: 3rem 0;
+    margin: 2rem 0;
 }
 .tabs::before,
 .tabs::after {
@@ -82,4 +82,27 @@
     z-index: 2;
     opacity: 1;
     transition: all 0.35s;
+}
+
+.buttonContainer {
+    width: 90%;
+    display: flex;
+    justify-content: end;
+    padding-top: 2rem;
+}
+
+.button {
+    background-color: #0e0550;
+    padding: .5rem 4rem;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.button:hover {
+    box-shadow: 2px 2px grey;
+}
+
+.button:active {
+    box-shadow: -2px -2px grey;
 }

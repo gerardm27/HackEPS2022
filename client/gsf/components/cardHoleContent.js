@@ -1,4 +1,4 @@
-import styles from "../styles/foratCard.module.css";
+import styles from "../styles/cardContents.module.css";
 import Image from "next/image";
 
 export default function CardHoleContent({ description, lat, long, photo }) {

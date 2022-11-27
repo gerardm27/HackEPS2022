@@ -3,6 +3,7 @@ import styles from "../../styles/List.module.css";
 import CardHoleContent from "../../components/cardHoleContent";
 import CardCanalContent from "../../components/cardCanalContent";
 import {getListOfAllElements} from "../../services/apiCalls";
+import Link from "next/link";
 
 export async function getServerSideProps(context) {
     const elements = await getListOfAllElements();
@@ -74,6 +75,10 @@ export default function List({ forats, canals }) {
                 <h1 className={"title"}>
                     Sensors List
                 </h1>
+
+                <div className={styles.buttonContainer}>
+                    <Link className={styles.button} href="/report">New</Link>
+                </div>
 
                 <div className={styles.wrapper}>
                     <div className={styles.tabs}>

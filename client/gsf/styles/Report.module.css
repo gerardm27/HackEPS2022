@@ -1,4 +1,44 @@
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    margin: 2rem 0;
+}
 
+.formBlock {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+}
 
+.inputStyled {
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    margin-top: 10px;
+    font-size: 1rem;
+    border: 1px solid black;
+    appearance: none;
+}
 
+.tip {
+    font-size: 0.8rem;
+    color: #5e5e5e;
+}
 
+.button {
+    background-color: #0e0550;
+    padding: .7rem 4rem;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 0;
+    margin-top: 10px;
+}
+
+.button:hover {
+    box-shadow: 2px 2px grey;
+}
+
+.button:active {
+    box-shadow: -2px -2px grey;
+}

@@ -12,3 +12,21 @@ export async function getListOfAllElements() {
         return { list: null };
     }
 }
+
+export async function postCreateNewReport(tipus, description, status, coords) {
+    try {
+        const response = await axios({
+            method: 'post',
+            url: `${BackendURL}/elements`,
+            body: {
+                type: tipus,
+                coord: coords,
+                desc: description,
+                status : status
+            }
+        });
+        return { status: response.status };
+    } catch (error) {
+        return { status: response.status };
+    }
+}
