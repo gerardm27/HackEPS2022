@@ -2,117 +2,20 @@ import Head from "next/head";
 import styles from "../../styles/List.module.css";
 import CardHoleContent from "../../components/cardHoleContent";
 import CardCanalContent from "../../components/cardCanalContent";
-
-const fakeList = {
-    canals: [
-        {
-            id: "1",
-            coords: [
-                {
-                    lat: "234",
-                    long: "543"
-                },
-                {
-                    lat: "234",
-                    long: "543"
-                },
-                {
-                    lat: "234",
-                    long: "543"
-                },
-                {
-                    lat: "234",
-                    long: "543"
-                }
-            ],
-            description: "Aquest es el primer canal que trobarem en el mapa",
-            photo: "/placeholder.jpeg",
-            status: "OK"
-        },
-        {
-            id: "2",
-            coords: [
-                {
-                    lat: "234",
-                    long: "543"
-                },
-                {
-                    lat: "234",
-                    long: "543"
-                },
-                {
-                    lat: "234",
-                    long: "543"
-                },
-                {
-                    lat: "234",
-                    long: "543"
-                }
-            ],
-            description: "Aquest es el primer canal que trobarem en el mapa",
-            photo: "/placeholder.jpeg",
-            status: "MISSING"
-        },
-        {
-            id: "3",
-            coords: [
-                {
-                    lat: "234",
-                    long: "543"
-                },
-                {
-                    lat: "234",
-                    long: "543"
-                },
-                {
-                    lat: "234",
-                    long: "543"
-                },
-                {
-                    lat: "234",
-                    long: "543"
-                }
-            ],
-            description: "Aquest es el primer canal que trobarem en el mapa",
-            photo: "/placeholder.jpeg",
-            status: "BROKEN"
-        },
-    ],
-    forats: [
-        {
-            description: "1970",
-            id: "node-000af5dc-0b21-4a30-e895-8d93824",
-            lat: "51.13876461",
-            long: "-0.48426576",
-            status: "OK",
-            photo: "/placeholder.jpeg"
-        },
-        {
-            description: "1970",
-            id: "node-000af5dc-0b21-4a30-e895-8d93825",
-            lat: "51.13876461",
-            long: "-0.48426576",
-            status: "BROKEN",
-            photo: "/placeholder.jpeg"
-        },
-        {
-            description: "1970",
-            id: "node-000af5dc-0b21-4a30-e895-8d93826",
-            lat: "51.13876461",
-            long: "-0.48426576",
-            status: "MISSING",
-            photo: "/placeholder.jpeg"
-        },
-    ]
-}
+import {getListOfAllElements} from "../../services/apiCalls";
 
 export async function getServerSideProps(context) {
+    const elements = await getListOfAllElements();
+
+    const holes = elements.list.forats.slice(0, 200);
+    const canals = elements.list.canals.slice(0, 200);
+
     return {
-        props: { forats: fakeList.forats, canals: fakeList.canals },
+        props: { forats: holes, canals: canals },
     }
 }
 
-function getHoleCard(photo, description, lat, long, status, id) {
+function getHoleCard(photo, description, lat, lng, status, id) {
     let cardStyle = styles.card;
     if (status === "BROKEN") {
         cardStyle = styles.cardBroken;
@@ -124,8 +27,8 @@ function getHoleCard(photo, description, lat, long, status, id) {
             <CardHoleContent
                 description={description}
                 lat={lat}
-                long={long}
-                photo={photo}
+                long={lng}
+                photo={"/placeholder.jpeg"}
             />
         </div>
     );
@@ -143,10 +46,10 @@ function getCanalCard(photo, description, coords, status, id) {
             <CardCanalContent
                 description={description}
                 latInicial={coords[0].lat}
-                longInicial={coords[0].long}
+                longInicial={coords[0].lng}
                 latFinal={coords[coords.length-1].lat}
-                longFinal={coords[coords.length-1].long}
-                photo={photo}
+                longFinal={coords[coords.length-1].lng}
+                photo={"/placeholder.jpeg"}
             />
         </div>
     );
@@ -156,7 +59,8 @@ function getCanalCard(photo, description, coords, status, id) {
 
 export default function List({ forats, canals }) {
 
-    console.log(canals)
+    console.log("TTTTTTTEFASFLASDFHK")
+    console.log(forats)
 
     return (
         <div className={"container"}>
@@ -178,7 +82,7 @@ export default function List({ forats, canals }) {
                             <label htmlFor="tab-1" className={styles.tabLabel}>Llistat de forats</label>
                             <div className={styles.tabContent}>
                                 {forats.map((item) => (
-                                    getHoleCard(item.photo, item.description, item.lat, item.long, item.status, item.id)
+                                    getHoleCard(item.photo, item.description, item.lat, item.lng, item.status, item.id)
                                 ))}
                             </div>
                         </div>
