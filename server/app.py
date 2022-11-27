@@ -81,7 +81,7 @@ def retrieve_single_element(id):
     if(len(result) == 0):
         cur.execute("SELECT * FROM blackbox.canals WHERE id=%s LIMIT 1", (id,),)
         result = cur.fetchall()
-        ttype = "canal"
+        ttype = "canals"
         if(len(result) == 0): 
             return "Element not found", 404
     result = result[0]
