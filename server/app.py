@@ -125,7 +125,6 @@ def modify_element(id):
     tipus = bodyParsed['type']
     status = bodyParsed['status']
     image = bodyParsed['image']
-    print
     try:
         if tipus=="forats":
             cur.execute("UPDATE blackbox.%s SET status='%s', photo='%s' WHERE id='%s'" % (tipus, status, image, id))
