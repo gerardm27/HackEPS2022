@@ -107,7 +107,7 @@ def uploadImage(base64Image : str):
         "key": IMGBB_API_KEY,
         "image": base64Image,
     }
-    
+
     res = requests.post(url, payload)
     if(res.status_code == 200): 
         return res.text
@@ -177,9 +177,8 @@ def modify_element(id):
 
     tipus = getElementType(id)
     status = bodyParsed['status']
-    image = bodyParsed['image']
     try:
-        cur.execute("UPDATE blackbox.%s SET status='%s', photo='%s' WHERE id='%s'" % (tipus, status, image, id))
+        cur.execute("UPDATE blackbox.%s SET status='%s'  WHERE id='%s'" % (tipus, status, id))
         conn.commit()
     except Exception as e:
         cur.close()
