@@ -13,23 +13,23 @@ export default function Home() {
 
       <main className={"main"}>
         <h1 className={"title"}>
-          Welcome to GSF
+          Benvingut a GSF
         </h1>
         <h2 className={"description"}>
-          What do you want to do?
+          Què vols fer?
         </h2>
 
         <div className={styles.grid}>
           <Card
             imagePath = {"/list.png"}
-            title = "See all incidents"
-            description = "See all incidents reported as a list"
+            title = "Veure tots els incidents"
+            description = "Veure tots els incidents en forma de llista"
             link = "/list"
           />
           <Card
             imagePath = {"/map.png"}
-            title = "See all locations"
-            description = "See all incidents reported on a map"
+            title = "Veure totes les localitzacions"
+            description = "Veure tots els incidents en forma de mapa"
             link = "/map"
           />
         </div>

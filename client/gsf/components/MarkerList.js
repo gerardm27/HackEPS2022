@@ -1,16 +1,14 @@
 import { MapContainer, Marker, Polyline, Popup, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 
-
 const formatCoords = (coords) => {
     let positions = [];
     for (let i = 0; i < coords.length; i++) {
-        positions.push([coords[i].lng, coords[i].lat]);
+        positions.push([coords[i].lat, coords[i].lng]);
     }
     console.log(positions);
     return positions;
 }
-
 
 const MarkerList = (props) => {
     console.log(props.canals);
@@ -51,19 +49,10 @@ const MarkerList = (props) => {
                 </Marker>
             ))}
             {props.canals.map((canal) => (
-                <Polyline pathOptions={{color: 'blue', weight: 3}} 
-                //positions={[['51.14970754', '-0.50447302'], ['51.15085454', '-0.48050871']]}
-                positions={formatCoords(canal.coords)}
+                <Polyline pathOptions={{color: 'blue', weight: 7}} 
+                    positions={formatCoords(canal.coords)}
                 />
             ))}
-            {/* {props.canals.map((canal) => (
-                <Marker position={[canal.lat, canal.lng]}>
-                    <Popup>
-                        <h1>{canal.description}</h1>
-                        <img src={canal.photo}/>
-                    </Popup>
-                </Marker>
-            ))} */}
         </div>
     )  
 }

@@ -34,7 +34,7 @@ export default function Report() {
 
             <main className={"main"}>
                 <h1 className={"title"}>
-                    New report
+                    Nou report
                 </h1>
                 <form className={styles.formContainer}>
                     <div className={styles.formBlock}>
@@ -72,7 +72,7 @@ export default function Report() {
                     </div>
 
                    <span className={styles.tip}>
-                       *Per introduir un canal, introdueix tantes latitud i longituds com vulguis per marcar el canal, ha de ser més de una
+                       *Per introduir un canal, introdueix tantes latituds i longituds com vulguis per marcar el canal, ha de ser més de una
                    </span>
 
                     <button type="submit" className={styles.button} onClick={createNewReport}>Create</button>
