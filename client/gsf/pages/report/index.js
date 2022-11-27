@@ -59,7 +59,7 @@ export default function Report() {
 
             <main className={"main"}>
                 <h1 className={"title"}>
-                    Nou report
+                    Nou avís
                 </h1>
                 <form className={styles.formContainer}>
                     <div className={styles.formBlock}>
