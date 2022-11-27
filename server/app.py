@@ -104,13 +104,30 @@ def add_one_element():
     code = uuid.uuid4()
 
     bodyParsed = json.loads(request.data)
-    try:
-        cur.execute("INSERT INTO blackbox.forats(id, geom, code, description, status) VALUES ('%s', ST_GeomFromText('POINT(%s %s)', 4326), '%s','%s','%s')" % (newId, bodyParsed['coord'][0]['lat'], bodyParsed['coord'][0]['long'], code, bodyParsed['desc'], bodyParsed['status']))
-        conn.commit()
-    except Exception as e:
-        cur.close()
-        response="ERROR CREANT OBJECTE"
-        return jsonify(error=True, response=response), 404
+
+    if(len(bodyParsed['coord'] > 1)):
+        # multipoints recieved
+        # need to transform it to geom
+        preGeom = "LINESTRING("
+        try: 
+            for pairPoints in bodyParsed['coord']:
+                preGeom = preGeom+pairPoints['lat']+" "+pairPoints['lat']+","
+            preGeom = preGeom.rstrip(",")+")"
+            cur.execute("INSERT INTO blackbox.forats(id, geom, code, description, status) VALUES ('%s', ST_GeomFromText('%s)', 4326), '%s','%s','%s')" % (newId, preGeom, code, bodyParsed['desc'], bodyParsed['status']))
+            conn.commit()
+        except Exception as e:
+            cur.close()
+            response="ERROR CREANT OBJECTE tipus 1"
+            return jsonify(error=True, response=response), 404
+    else: 
+        # single point
+        try:
+            cur.execute("INSERT INTO blackbox.forats(id, geom, code, description, status) VALUES ('%s', ST_GeomFromText('POINT(%s %s)', 4326), '%s','%s','%s')" % (newId, bodyParsed['coord'][0]['lat'], bodyParsed['coord'][0]['long'], code, bodyParsed['desc'], bodyParsed['status']))
+            conn.commit()
+        except Exception as e:
+            cur.close()
+            response="ERROR CREANT OBJECTE tipus 2"
+            return jsonify(error=True, response=response), 404
 
     cur.close()
     response = "success"
