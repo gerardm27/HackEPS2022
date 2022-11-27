@@ -25,7 +25,7 @@ export async function getElementInformation(id) {
     }
 }
 
-export async function postCreateNewReport(tipus, description, status, coords) {
+export async function postCreateNewReport(tipus,coords,description,status,_image) {
     try {
         console.log("tipus: " + tipus);
         console.log("description: " + description);
@@ -47,6 +47,6 @@ export async function postCreateNewReport(tipus, description, status, coords) {
         });
         return { status: response.status };
     } catch (error) {
-        return { status: response.status };
+        return { status: null };
     }
 }

@@ -44,7 +44,7 @@ const MarkerList = (props) => {
                     >
                     <Popup>
                         <h1>{forat.description}</h1>
-                        <img src={forat.photo}/>
+                        <img src={forat.image}/>
                     </Popup>
                 </Marker>
             ))}
